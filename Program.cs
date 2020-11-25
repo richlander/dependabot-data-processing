@@ -54,7 +54,6 @@ foreach(string line in linesInFile)
 }
 
 List<PackageIgnoreInfo> packageIgnoreInfo = new();
-PackageSet packageSet = new(packageIgnoreInfo);
 
 // Process packages
 foreach(string name in packages.Keys)
@@ -80,6 +79,7 @@ foreach(string name in packages.Keys)
 }
 
 // Print data file
+PackageSet packageSet = new(packageIgnoreInfo, packageIgnoreInfo.Count);
 string json = JsonSerializer.Serialize<PackageSet>(packageSet, new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -102,4 +102,4 @@ string GetWildcardVersion(string version)
 record Package(string Id, string Version, string TargetFramework);
 record PackageIgnoreInfo(string Name, PackageTargetFrameworkIgnoreMapping[] Mapping);
 record PackageTargetFrameworkIgnoreMapping(string TargetFramework, string[] Ignore);
-record PackageSet(List<PackageIgnoreInfo> Packages);
+record PackageSet(List<PackageIgnoreInfo> Packages, int Count);
